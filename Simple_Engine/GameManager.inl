@@ -6,10 +6,12 @@
 template<typename T>
 void GameManager::LaunchScene()
 {
+    if (!eAssetmanageur) {
+
+    }
     static_assert(std::is_base_of<Scene, T>::value, "T must be derived from Scene");
 
     T* newScene = new T();
-    newScene->SetGameManager(this);
 
     if (!newScene) {
         std::cerr << "Erreur : Impossible d'initialiser la nouvelle scène." << std::endl;

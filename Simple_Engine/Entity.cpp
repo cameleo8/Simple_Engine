@@ -6,7 +6,7 @@
 void Entity::Update() {
 
 }
-void Entity::Initialize(const char* path) {
+void Entity::Initialize(std::string path) {
 	iLife = 0;
 	iMaxLife = 0;
 	iLayout = 0;
@@ -25,6 +25,7 @@ void Entity::Initialize(const char* path) {
 
 	Position = { 0,0 };
 	Direction = { 0,0 };
+	Origine = { 0,0 };
 	Scale = { 1,1 };
 
 	mSprite.setTexture(GameManager::Get()->GetTexture(path));
@@ -35,8 +36,8 @@ void Entity::Initialize(const char* path) {
 }
 
 void Entity::SetPosition(float pos_x, float pos_y, float ratio_x, float ratio_y) {
-	pos_x += (0.5f * Size.x) - (ratio_x * Size.x);
-	pos_y += (0.5f * Size.y) - (ratio_y * Size.y);
+	pos_x -= (Origine.x * Size.x);
+	pos_y -= (Origine.y * Size.y);
 
 	mSprite.setPosition(pos_x, pos_y);
 }
@@ -45,7 +46,7 @@ void Entity::SetDirection(float dir_x, float dir_y) {
 }
 
 void Entity::SetOrigine(float value_x_pc, float value_y_pc) {
-	
+	Origine = { value_x_pc ,value_y_pc };
 }
 void Entity::SetScale(float scal_x_pc, float scal_y_pc) {
 	mSprite.setScale(scal_x_pc, scal_y_pc);
@@ -196,4 +197,8 @@ bool Entity::IsColliding(Entity* other) const {
 	}
 
 	return false;
+}
+
+void Entity::SetImage(std::string path) {
+	mSprite.setTexture(GameManager::Get()->GetTexture(path));
 }

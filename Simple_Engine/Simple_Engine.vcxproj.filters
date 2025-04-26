@@ -16,6 +16,9 @@
     <Filter Include="engine">
       <UniqueIdentifier>{3799cb39-a104-44b2-b451-bdfcd388ee2b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="scene demo">
+      <UniqueIdentifier>{e15fd8ee-1783-493a-ab9e-04d79625791b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -36,6 +39,12 @@
     <ClCompile Include="Scene.cpp">
       <Filter>engine</Filter>
     </ClCompile>
+    <ClCompile Include="SceneDemo.cpp">
+      <Filter>scene demo</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityDemo.cpp">
+      <Filter>scene demo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -55,6 +64,12 @@
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneDemo.h">
+      <Filter>scene demo</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityDemo.h">
+      <Filter>scene demo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

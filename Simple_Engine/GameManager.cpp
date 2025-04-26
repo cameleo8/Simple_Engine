@@ -14,6 +14,8 @@ void GameManager::Run() {
     while (Window && Window->isOpen()) {
         SetDeltaTime(clock.restart().asSeconds());
 
+        HandleInput();
+
         Update();
         Draw();
     }
@@ -24,6 +26,10 @@ void GameManager::Update() {
         aScene->UpdateEntity(fDeltaTime);
         aScene->UpdateScene(fDeltaTime);
     }
+
+
+    aScene->UpdateList();
+
 }
 
 void GameManager::Draw() {
@@ -38,8 +44,13 @@ void GameManager::CreateWindow(unsigned int Width, unsigned int Height, const ch
     Window = new sf::RenderWindow(sf::VideoMode(Width, Height), Title);
     Window->setFramerateLimit(LimiteFPS);
 
-    WindowWidth = Width;
-    WindowHeight = Height;
+    int x = Width;
+    int y = Height;
+
+    WindowSize = { x, y };
+
+    eAssetmanageur = new AssetManager(Window);
+    bool fontLoaded = DefaultFont.loadFromFile("../res/font/DefaultFont.ttf");
 }
 
 GameManager* GameManager::Get() {
@@ -52,4 +63,23 @@ sf::Texture& GameManager::GetTexture(const std::string& path) {
         throw std::runtime_error("AssetManager non défini !");
     }
     return eAssetmanageur->GetTexture(path);
+}
+
+
+sf::Vector2i GameManager::GetWindowSize() {
+    return WindowSize;
+}
+void GameManager::HandleInput() {
+    sf::Event event;
+    while (Window->pollEvent(event))
+    {
+        if (event.type == sf::Event::Closed)
+        {
+            Window->close();
+            return;
+        }
+
+        if (aScene)
+            aScene->OnEventScene(event);
+    }
 }

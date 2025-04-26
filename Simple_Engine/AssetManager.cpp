@@ -13,7 +13,7 @@
 AssetManager::AssetManager() = default;
 
 AssetManager::AssetManager(sf::RenderWindow* win) : window(win) {
-    LoadFromFile("../../../img/");
+    LoadFromFile("../res/img/");
 }
 
 sf::Texture& AssetManager::GetTexture(const std::string& name) {
@@ -32,7 +32,7 @@ void AssetManager::LoadFromFile(const std::vector<std::string>& paths) {
     totalImagesToLoad = imagesLoaded = 0;
     progress = 0.0f;
 
-    if (!loadingBackgroundTexture.loadFromFile("../../../img/LoadingScreen.png")) {
+    if (!loadingBackgroundTexture.loadFromFile("../res/img/def.png")) {
         std::cerr << "Erreur : Impossible de charger l'image de fond.\n";
     }
 

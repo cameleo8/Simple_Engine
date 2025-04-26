@@ -20,7 +20,7 @@ T* Entity::CreateEntity(float radius, const sf::Color& color)
 }
 
 template<typename T>
-T* Entity::CreateEntity(const char* path)
+T* Entity::CreateEntity(std::string path)
 {
 	return GetScene()->CreateEntity<T>(path);
 }

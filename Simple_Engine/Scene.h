@@ -29,18 +29,22 @@ class Scene
 public :
 	Scene() = default;
 
-	virtual void InitializeScene();
-	virtual void UpdateScene(float deltaTime);
-	virtual void OnEventScene();
+	virtual void InitializeScene() = 0;
+	virtual void UpdateScene(float deltaTime) = 0;
+	virtual void OnEventScene(const sf::Event& event) = 0;
 
 	void DrawScene();
 	void UpdateEntity(float deltaTime);
+	void UpdateList();
 
 	float GetDeltaTime();
 	sf::Vector2i GetWindowSize();
 
 	template<typename T>
 	T* CreateEntity(std::string path);
+	template<typename T>
+	T* CreateEntity();
+	
 };
 
 #include "Scene.inl"

@@ -45,6 +45,7 @@ class Entity
 	sf::Vector2f Size;
 	sf::Vector2f DefaultSize;
 	sf::Vector2f HitboxSize;
+	sf::Vector2f Origine;
 
 public :
 	inline bool GetDestroy() { return bToDestroy; }
@@ -118,7 +119,7 @@ public :
 	template<typename T>
 	T* CreateEntity(float radius, const sf::Color& color);
 	template<typename T>
-	T* CreateEntity(const char* path);
+	T* CreateEntity(std::string path);
 
 protected:
 	Entity() = default;
@@ -127,11 +128,12 @@ protected:
 	virtual void UpdateEntity() {};
 	virtual void OnCollision(Entity* collidedWith) {};
 	virtual void OnInitialize() {};
-	virtual void SetImage(const char* path);
+
+	void SetImage(std::string path);
 
 private :
 	void Update();
-	void Initialize(const char* path);
+	void Initialize(std::string path);
 
 	friend class GameManager;
 	friend Scene;

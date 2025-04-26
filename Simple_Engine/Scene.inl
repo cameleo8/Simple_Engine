@@ -11,7 +11,19 @@ T* Scene::CreateEntity(std::string path){
 	T* newEntity = new T();
 
 	Entity* entity = newEntity;
-	entity->InitialiseEntity(path);
+	entity->Initialize(path);
+	lEntityToAdd.push_back(newEntity);
+	return newEntity;
+}
+
+template<typename T>
+T* Scene::CreateEntity() {
+	static_assert(std::is_base_of<Entity, T>::value, "T must be derived from Entity");
+
+	T* newEntity = new T();
+
+	Entity* entity = newEntity;
+	entity->Initialize("def");
 	lEntityToAdd.push_back(newEntity);
 	return newEntity;
 }

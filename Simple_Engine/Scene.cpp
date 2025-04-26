@@ -51,28 +51,6 @@ void Scene::UpdateEntity(float deltaTime) {
 	lUI = temp;
 
 
-	//ajout et supretion des entity
-	for (Entity* entity : lEntityToDestroy) {
-		delete entity;
-	}
-	lEntityToDestroy.clear();
-
-	for (Entity* entity : lEntityToAdd) {
-		lEntityToAdd.push_back(entity);
-	}
-	lEntityToAdd.clear();
-
-
-	//ajout et supretion des ui
-	for (Entity* ui : lUIToDestroy) {
-		delete ui;
-	}
-	lUIToDestroy.clear();
-
-	for (Entity* ui : lUIToAdd) {
-		lUIToAdd.push_back(ui);
-	}
-	lUIToAdd.clear();
 }
 
 
@@ -84,5 +62,32 @@ float Scene::GetDeltaTime() {
 
 
 sf::Vector2i Scene::GetWindowSize() {
-	return sf::Vector2i(GameManager::Get()->WindowWidth, GameManager::Get()->WindowHeight);
+	return sf::Vector2i(GameManager::Get()->WindowSize.x, GameManager::Get()->WindowSize.y);
+}
+
+
+void Scene::UpdateList() {
+
+	//ajout et supretion des entity
+	for (Entity* entity : lEntityToDestroy) {
+		delete entity;
+	}
+	lEntityToDestroy.clear();
+
+	for (Entity* entity : lEntityToAdd) {
+		lEntity.push_back(entity);
+	}
+	lEntityToAdd.clear();
+
+
+	//ajout et supretion des ui
+	for (Entity* ui : lUIToDestroy) {
+		delete ui;
+	}
+	lUIToDestroy.clear();
+
+	for (Entity* ui : lUIToAdd) {
+		lUI.push_back(ui);
+	}
+	lUIToAdd.clear();
 }

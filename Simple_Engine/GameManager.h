@@ -18,8 +18,7 @@ private:
     sf::Font DefaultFont;
     float fDeltaTime = 0.0f;
 
-    int WindowWidth = 0;
-    int WindowHeight = 0;
+    sf::Vector2i WindowSize = { 0,0 };
 
 public:
     enum Tag {
@@ -32,6 +31,7 @@ public:
     void Run();
     void Update();
     void Draw();
+    void HandleInput();
 
     void SetDeltaTime(float DeltaTime) { fDeltaTime = DeltaTime; }
     float GetDeltaTime() const { return fDeltaTime; }
@@ -47,6 +47,7 @@ public:
 
     sf::Font& GetFont() { return DefaultFont; }
     sf::RenderWindow* GetWindow() { return Window; }
+    sf::Vector2i GetWindowSize();
 
     sf::Texture& GetTexture(const std::string& path);
 

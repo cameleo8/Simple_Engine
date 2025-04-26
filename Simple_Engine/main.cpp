@@ -1,8 +1,11 @@
 #include <iostream>
 #include "GameManager.h"
+#include "SceneDemo.h"
 
 int main()
 {
-	std::cout << "Hello world !" << std::endl;
+	GameManager* instanceGM = GameManager::Get();
+	instanceGM->CreateWindow(800, 600, "demo", 60);
+	instanceGM->LaunchScene<SceneDemo>();
 	return 0;
 }
