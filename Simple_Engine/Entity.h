@@ -95,6 +95,8 @@ public :
 	float GetDistanceTo(Entity* _Entity);
 	float GetDistanceTo(float _x, float _y);
 
+	bool GoToDirection(float x, float y, float speed);
+	bool GoToPosition(int x, int y, float speed);
 	void StopMove();
 
 	void HealLife(int heal);

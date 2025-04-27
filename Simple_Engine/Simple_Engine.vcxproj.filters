@@ -45,6 +45,12 @@
     <ClCompile Include="EntityDemo.cpp">
       <Filter>scene demo</Filter>
     </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -70,6 +76,12 @@
     </ClInclude>
     <ClInclude Include="EntityDemo.h">
       <Filter>scene demo</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug.h">
+      <Filter>engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

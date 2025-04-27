@@ -1,10 +1,33 @@
 #include <SFML/Graphics.hpp>
 #include "Entity.h"
 #include "Scene.h"
-
+#include "Utils.h"
+#include "Debug.h"
 
 void Entity::Update() {
+	float dt = GetDeltaTime();
+	float distance = fSpeed * dt;
 
+	sf::Vector2f normalizedDirection = Direction;
+	if (Utils::Normalize(normalizedDirection)) {
+		sf::Vector2f translation = normalizedDirection * distance;
+		mSprite.move(translation);
+	}
+
+	// Gestion du déplacement vers une cible
+	if (mTarget.isSet) {
+		mTarget.distance -= distance;
+		if (mTarget.distance <= 0.f) {
+			SetPosition(mTarget.position.x, mTarget.position.y);
+			Direction = sf::Vector2f(0.f, 0.f);
+			mTarget.isSet = false;
+		}
+	}
+	if (bHitbox) {
+		DrawHitbox();
+		UpdateCollider();
+	}
+	UpdateEntity();
 }
 void Entity::Initialize(std::string path) {
 	iLife = 0;
@@ -77,6 +100,34 @@ float Entity::GetDistanceTo(float _x, float _y) {
 	return distanceSquared;
 }
 
+bool Entity::GoToDirection(float x, float y, float speed) {
+	
+
+	fSpeed = speed;
+	sf::Vector2f position = GetPosition();
+	sf::Vector2f direction = sf::Vector2f(x - position.x, y - position.y);
+
+	bool success = Utils::Normalize(direction);
+	if (!success) {
+		return false;
+	}
+
+	Direction = { x,y };
+	return true;
+}
+bool Entity::GoToPosition(int x, int y, float speed) {
+	if (GoToDirection(x, y, speed) == false)
+		return false;
+
+	sf::Vector2f position = GetPosition();
+
+	mTarget.position = { x, y };
+	mTarget.distance = Utils::GetDistance(position.x, position.y, x, y);
+	mTarget.isSet = true;
+
+	return true;
+}
+
 void Entity::StopMove() {
 	Direction = { 0,0 };
 	mTarget.isSet = false;
@@ -104,7 +155,12 @@ bool Entity::HaveTag(int nOfTag) {
 	return false;
 }
 sf::Vector2f Entity::GetPosition() {
-	return Position;
+	sf::Vector2f position = mSprite.getPosition();
+
+	position.x -= (0.5f * Size.x) - (Scale.x * Size.x);
+	position.y -= (0.5f * Size.y) - (Scale.y * Size.y);
+
+	return position;
 }
 
 
@@ -166,6 +222,7 @@ void Entity::UpdateCollider() {
 		aabbCollider->yMin = position.y - halfOffsetHeight;
 		aabbCollider->xMax = position.x + halfOffsetWidth;
 		aabbCollider->yMax = position.y + halfOffsetHeight;
+
 	}
 }
 void Entity::DrawHitbox() {
@@ -185,7 +242,7 @@ void Entity::DrawHitbox() {
 		aabbCollider->xSize = aabbCollider->xMax - aabbCollider->xMin;
 		aabbCollider->ySize = aabbCollider->yMax - aabbCollider->yMin;
 
-		//Debug::DrawRectangle(aabbCollider->xMin, aabbCollider->yMin, aabbCollider->xSize, aabbCollider->ySize, sf::Color::Red);
+		Debug::DrawRectangle(aabbCollider->xMin, aabbCollider->yMin, aabbCollider->xSize, aabbCollider->ySize, sf::Color::Red);
 
 	}
 }

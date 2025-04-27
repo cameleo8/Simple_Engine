@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Debug.h"
 #include <vector>
 #include <SFML/Graphics.hpp>
 
@@ -20,7 +20,13 @@ private:
 
     sf::Vector2i WindowSize = { 0,0 };
 
+    bool KeyPressed = false;
+    bool DrawHitBox = false;
+
+    
+
 public:
+
     enum Tag {
         tCount
     };

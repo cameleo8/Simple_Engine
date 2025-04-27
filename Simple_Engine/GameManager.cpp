@@ -1,6 +1,7 @@
 #include "GameManager.h"
 #include "Scene.h"
 #include "AssetManager.h"
+#include "Debug.h"
 
 GameManager::GameManager() {}
 
@@ -37,7 +38,13 @@ void GameManager::Draw() {
 
     Window->clear();
     aScene->DrawScene();
+
+    if (DrawHitBox) {
+        Debug::Get()->Draw(Window);
+    }
+
     Window->display();
+
 }
 
 void GameManager::CreateWindow(unsigned int Width, unsigned int Height, const char* Title, int LimiteFPS) {
@@ -81,5 +88,15 @@ void GameManager::HandleInput() {
 
         if (aScene)
             aScene->OnEventScene(event);
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::H)) {
+        if (!KeyPressed) {
+            KeyPressed = true;
+            DrawHitBox = !DrawHitBox;
+        }
+    }
+    else {
+        KeyPressed = false;
     }
 }

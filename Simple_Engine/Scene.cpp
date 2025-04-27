@@ -29,7 +29,7 @@ void Scene::UpdateEntity(float deltaTime) {
 
 	for (auto entity : lEntity) {
 		if (!entity->GetDestroy()) {
-			entity->UpdateEntity();
+			entity->Update();
 			temp.push_back(entity);
 		}
 		else
@@ -41,7 +41,7 @@ void Scene::UpdateEntity(float deltaTime) {
 
 	for (auto ui : lUI) {
 		if (!ui->GetDestroy()) {
-			ui->UpdateEntity();
+			ui->Update();
 			temp.push_back(ui);
 		}
 		else {
