@@ -157,8 +157,8 @@ bool Entity::HaveTag(int nOfTag) {
 sf::Vector2f Entity::GetPosition() {
 	sf::Vector2f position = mSprite.getPosition();
 
-	position.x -= (0.5f * Size.x) - (Scale.x * Size.x);
-	position.y -= (0.5f * Size.y) - (Scale.y * Size.y);
+	position.x -= (0.5f * Size.x) - (Origine.x * Size.x);
+	position.y -= (0.5f * Size.y) - (Origine.y * Size.y);
 
 	return position;
 }
@@ -195,55 +195,32 @@ void Entity::SolidHitbox(bool etat) {
 }
 void Entity::SetHitboxSize(float x, float y) {
 	if (auto* aabbCollider = dynamic_cast<AABBCollider*>(mHitbox)) {
-
-		HitboxSize = { x,y };
-
-		sf::Vector2f position = GetPosition();
-
-		int halfOffsetWidth = HitboxSize.x / 2;
-		int halfOffsetHeight = HitboxSize.y / 2;
-
-		aabbCollider->xMin = position.x - halfOffsetWidth;
-		aabbCollider->yMin = position.y - halfOffsetHeight;
-		aabbCollider->xMax = position.x + halfOffsetWidth;
-		aabbCollider->yMax = position.y + halfOffsetHeight;
+		HitboxSize = { x, y };
 	}
 }
 void Entity::UpdateCollider() {
 	if (auto* aabbCollider = dynamic_cast<AABBCollider*>(mHitbox)) {
-		// Ajuste les limites de l'AABB en tenant compte de l'origine
+		sf::Vector2f centerPosition = GetPosition();
 
-		sf::Vector2f position = GetPosition();
+		aabbCollider->xMin = centerPosition.x;
+		aabbCollider->yMin = centerPosition.y;
+		aabbCollider->xMax = centerPosition.x + HitboxSize.x;
+		aabbCollider->yMax = centerPosition.y + HitboxSize.y;
 
-		int halfOffsetWidth = HitboxSize.x / 2;
-		int halfOffsetHeight = HitboxSize.y / 2;
-
-		aabbCollider->xMin = position.x - halfOffsetWidth;
-		aabbCollider->yMin = position.y - halfOffsetHeight;
-		aabbCollider->xMax = position.x + halfOffsetWidth;
-		aabbCollider->yMax = position.y + halfOffsetHeight;
-
+		aabbCollider->xSize = aabbCollider->xMax - aabbCollider->xMin;
+		aabbCollider->ySize = aabbCollider->yMax - aabbCollider->yMin;
 	}
 }
 void Entity::DrawHitbox() {
 	if (auto* aabbCollider = dynamic_cast<AABBCollider*>(mHitbox)) {
-
-		// Limites de l'AABB ajustées par l'origine
-		sf::Vector2f position = GetPosition();
-
-		int halfOffsetWidth = HitboxSize.x / 2;
-		int halfOffsetHeight = HitboxSize.y / 2;
-
-		aabbCollider->xMin = position.x - halfOffsetWidth;
-		aabbCollider->yMin = position.y - halfOffsetHeight;
-		aabbCollider->xMax = position.x + halfOffsetWidth;
-		aabbCollider->yMax = position.y + halfOffsetHeight;
-
-		aabbCollider->xSize = aabbCollider->xMax - aabbCollider->xMin;
-		aabbCollider->ySize = aabbCollider->yMax - aabbCollider->yMin;
-
-		Debug::DrawRectangle(aabbCollider->xMin, aabbCollider->yMin, aabbCollider->xSize, aabbCollider->ySize, sf::Color::Red);
-
+		UpdateCollider(); 
+		Debug::DrawRectangle(
+			aabbCollider->xMin,
+			aabbCollider->yMin,
+			aabbCollider->xSize,
+			aabbCollider->ySize,
+			sf::Color::Red
+		);
 	}
 }
 bool Entity::IsColliding(Entity* other) const {

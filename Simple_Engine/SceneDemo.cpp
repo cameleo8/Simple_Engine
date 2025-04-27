@@ -6,7 +6,7 @@ void SceneDemo::InitializeScene() {
 	mousse->SetOrigine(0.5, 0.5);
 	mousse->SetPosition(GameManager::Get()->GetWindowSize().x / 2, GameManager::Get()->GetWindowSize().y / 2);
 	mousse->AddAABBHitbox();
-	mousse->SetHitboxSize(20, 20);
+	mousse->SetHitboxSize(mousse->GetSize().x, mousse->GetSize().y);
 
 	E1 = CreateEntity<EntityDemo>("img1");
 	E1->SetPosition((GameManager::Get()->GetWindowSize().x / 3) * 2, (GameManager::Get()->GetWindowSize().y / 3)*2);
