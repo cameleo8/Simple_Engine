@@ -50,6 +50,18 @@ void Scene::UpdateEntity(float deltaTime) {
 	}
 	lUI = temp;
 
+	for (auto it1 = lEntity.begin(); it1 != lEntity.end(); ++it1) {
+		for (auto it2 = std::next(it1); it2 != lEntity.end(); ++it2) {
+			//if ((*it1)->isHide || (*it2)->isHide)
+				//continue;
+
+			if ((*it1)->IsColliding(*it2)) {
+				(*it1)->OnCollision(*it2);
+				(*it2)->OnCollision(*it1);
+			}
+		}
+	}
+
 
 }
 
