@@ -80,7 +80,7 @@ public :
 
 	inline void AddTag(int tag) { tTag.push_back(tag); }
 
-	void SetPosition(float pos_x, float pos_y, float ratio_x = 0.5f, float ratio_y = 0.5f);
+	void SetPosition(float pos_x, float pos_y);
 	sf::Vector2f GetPosition();
 	void SetDirection(float dir_x, float dir_y);
 	inline sf::Vector2f GetDirection() { return Direction; }
@@ -89,6 +89,7 @@ public :
 	void SetScale(float scal_x_pc, float scal_y_pc);
 	void SetSize(float size_x_px, float size_y_px);
 	inline sf::Vector2f GetSize() { return Size; }
+	inline sf::Sprite* GetSprite() { return &mSprite; }
 
 	
 

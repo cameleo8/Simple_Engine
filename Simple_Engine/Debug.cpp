@@ -35,6 +35,8 @@ void Debug::Draw(sf::RenderWindow* pRenderWindow)
 	}
 
 	mCircles.clear();
+
+	
 }
 
 void Debug::DrawLine(float x1, float y1, float x2, float y2, const sf::Color& color)
@@ -91,4 +93,9 @@ void Debug::DrawText(float x, float y, const std::string& text, float ratioX, fl
 	sfText.setOrigin(bounds.width * ratioX, bounds.height * ratioY);
 
 	Debug::Get()->mTexts.push_back(sfText);
+}
+void Debug::ClearListe() {
+	mLines.clear();
+	mTexts.clear();
+	mCircles.clear();
 }

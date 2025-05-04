@@ -23,9 +23,11 @@ void GameManager::Run() {
 }
 
 void GameManager::Update() {
+    Debug::Get()->ClearListe();
+
     if (aScene) {
-        aScene->UpdateEntity(fDeltaTime);
         aScene->UpdateScene(fDeltaTime);
+        aScene->UpdateEntity(fDeltaTime);
     }
 
 
@@ -40,6 +42,7 @@ void GameManager::Draw() {
     aScene->DrawScene();
 
     if (DrawHitBox) {
+        Debug::Get()->DrawText(10, 10, std::to_string(GetDeltaTime()), sf::Color::Red);
         Debug::Get()->Draw(Window);
     }
 

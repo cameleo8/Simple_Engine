@@ -5,6 +5,7 @@
 #include "Debug.h"
 
 void Entity::Update() {
+
 	float dt = GetDeltaTime();
 	float distance = fSpeed * dt;
 
@@ -58,7 +59,7 @@ void Entity::Initialize(std::string path) {
 	HitboxSize = DefaultSize;
 }
 
-void Entity::SetPosition(float pos_x, float pos_y, float ratio_x, float ratio_y) {
+void Entity::SetPosition(float pos_x, float pos_y) {
 	pos_x -= (Origine.x * Size.x);
 	pos_y -= (Origine.y * Size.y);
 
@@ -69,7 +70,7 @@ void Entity::SetDirection(float dir_x, float dir_y) {
 }
 
 void Entity::SetOrigine(float value_x_pc, float value_y_pc) {
-	Origine = { value_x_pc ,value_y_pc };
+	Origine = { value_x_pc, value_y_pc };
 }
 void Entity::SetScale(float scal_x_pc, float scal_y_pc) {
 	mSprite.setScale(scal_x_pc, scal_y_pc);
@@ -112,20 +113,35 @@ bool Entity::GoToDirection(float x, float y, float speed) {
 		return false;
 	}
 
-	Direction = { x,y };
+	Direction = direction;
 	return true;
 }
-bool Entity::GoToPosition(int x, int y, float speed) {
-	if (GoToDirection(x, y, speed) == false)
+bool Entity::GoToPosition(int x, int y, float speed)
+{
+	sf::Vector2f pos = GetPosition();
+	sf::Vector2f toTarget = sf::Vector2f(x - pos.x, y - pos.y);
+
+	int distance = std::sqrt(toTarget.x * toTarget.x + toTarget.y * toTarget.y);
+
+	if (distance < 1) {
+		SetPosition(x, y);
 		return false;
+	}
 
-	sf::Vector2f position = GetPosition();
+	if (Utils::Normalize(toTarget)) {
+		sf::Vector2f movement = toTarget * speed * GetDeltaTime();
 
-	mTarget.position = { x, y };
-	mTarget.distance = Utils::GetDistance(position.x, position.y, x, y);
-	mTarget.isSet = true;
+		if (std::sqrt(movement.x * movement.x + movement.y * movement.y) > distance) {
+			SetPosition(x, y);
+			return false;
+		}
 
-	return true;
+		sf::Vector2f newPosition = pos + movement;
+		SetPosition(newPosition.x, newPosition.y);
+		return true;
+	}
+
+	return false;
 }
 
 void Entity::StopMove() {
@@ -157,8 +173,8 @@ bool Entity::HaveTag(int nOfTag) {
 sf::Vector2f Entity::GetPosition() {
 	sf::Vector2f position = mSprite.getPosition();
 
-	position.x -= (0.5f * Size.x) - (Origine.x * Size.x);
-	position.y -= (0.5f * Size.y) - (Origine.y * Size.y);
+	position.x += (Origine.x * Size.x);
+	position.y += (Origine.y * Size.y);
 
 	return position;
 }
@@ -202,10 +218,10 @@ void Entity::UpdateCollider() {
 	if (auto* aabbCollider = dynamic_cast<AABBCollider*>(mHitbox)) {
 		sf::Vector2f centerPosition = GetPosition();
 
-		aabbCollider->xMin = centerPosition.x;
-		aabbCollider->yMin = centerPosition.y;
-		aabbCollider->xMax = centerPosition.x + HitboxSize.x;
-		aabbCollider->yMax = centerPosition.y + HitboxSize.y;
+		aabbCollider->xMin = centerPosition.x - Origine.x * Size.x;
+		aabbCollider->yMin = centerPosition.y - Origine.y * Size.y;
+		aabbCollider->xMax = centerPosition.x + HitboxSize.x - Origine.x * Size.x;
+		aabbCollider->yMax = centerPosition.y + HitboxSize.y - Origine.y * Size.y;
 
 		aabbCollider->xSize = aabbCollider->xMax - aabbCollider->xMin;
 		aabbCollider->ySize = aabbCollider->yMax - aabbCollider->yMin;

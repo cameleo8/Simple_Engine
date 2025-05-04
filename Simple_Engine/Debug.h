@@ -26,6 +26,7 @@ class Debug
 	std::vector<sf::CircleShape> mCircles;
 
 	void Draw(sf::RenderWindow* pRenderWindow);
+	void ClearListe();
 
 public:
 	static Debug* Get();
@@ -35,6 +36,7 @@ public:
 	static void DrawCircle(float x, float y, float radius, const sf::Color& color);
 	static void DrawText(float x, float y, const std::string& text, const sf::Color& color);
 	static void DrawText(float x, float y, const std::string& text, float ratioX, float ratioY, const sf::Color& color);
+	
 
 	friend GameManager;
 };

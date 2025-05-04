@@ -24,31 +24,33 @@ void Scene::DrawScene() {
 
 void Scene::UpdateEntity(float deltaTime) {
 
-	std::vector<Entity*> temp; // liste tempo pour le clear 
+	std::vector<Entity*> tempE; // liste tempo pour le clear 
 
 
 	for (auto entity : lEntity) {
 		if (!entity->GetDestroy()) {
 			entity->Update();
-			temp.push_back(entity);
+			tempE.push_back(entity);
 		}
 		else
 		{
 			delete entity;
 		}
 	}
-	lEntity = temp;
+	lEntity = tempE;
+
+	std::vector<Entity*> tempU;
 
 	for (auto ui : lUI) {
 		if (!ui->GetDestroy()) {
 			ui->Update();
-			temp.push_back(ui);
+			tempU.push_back(ui);
 		}
 		else {
 			delete ui;
 		}
 	}
-	lUI = temp;
+	lUI = tempU;
 
 	for (auto it1 = lEntity.begin(); it1 != lEntity.end(); ++it1) {
 		for (auto it2 = std::next(it1); it2 != lEntity.end(); ++it2) {
@@ -79,7 +81,6 @@ sf::Vector2i Scene::GetWindowSize() {
 
 
 void Scene::UpdateList() {
-
 	//ajout et supretion des entity
 	for (Entity* entity : lEntityToDestroy) {
 		delete entity;
